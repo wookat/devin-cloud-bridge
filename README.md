@@ -46,14 +46,12 @@ The plugin wires the **official Devin MCP server** into your session with your A
 
 ### 2. Provide credentials
 
-**Option A — environment variables (recommended):**
+**Option A — credential placeholders (recommended):** the manifest declares `Authorization: Bearer ${DEVIN_API_KEY}` and `X-Org-Id: ${DEVIN_ORG_ID}`. In Devin Cloud, open the plugin's **Connect** flow and supply both values; locally, export them as env vars:
 
 ```bash
 export DEVIN_API_KEY='cog_...'
 export DEVIN_ORG_ID='org-...'
 ```
-
-The bundled MCP config expands `${env:DEVIN_API_KEY}` / `${env:DEVIN_ORG_ID}` in request headers.
 
 **Option B — literal headers in your user config** (works on every CLI version, including ones without header env-expansion). Add to `~/.config/devin/mcp_config.json` (`%APPDATA%\devin\mcp_config.json` on Windows):
 

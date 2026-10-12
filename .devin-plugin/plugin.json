@@ -1,5 +1,6 @@
 {
   "name": "devin-cloud-bridge",
+  "displayName": "Devin Cloud Bridge",
   "version": "1.0.0",
   "description": "Bridge local Devin sessions with Devin Cloud — read cloud session history, hand cloud plans off to local execution, message and spawn cloud sessions via the official Devin MCP endpoint.",
   "author": { "name": "wookat" },
@@ -12,8 +13,8 @@
       "url": "https://mcp.devin.ai/mcp",
       "transport": "http",
       "headers": {
-        "Authorization": "Bearer ${env:DEVIN_API_KEY}",
-        "X-Org-Id": "${env:DEVIN_ORG_ID}"
+        "Authorization": "Bearer ${DEVIN_API_KEY}",
+        "X-Org-Id": "${DEVIN_ORG_ID}"
       }
     }
   }

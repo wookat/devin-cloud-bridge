@@ -46,14 +46,12 @@ skills/
 
 ### 2. 提供凭证（二选一）
 
-**方案 A — 环境变量（推荐）：**
+**方案 A — 凭证占位符（推荐）：** 清单里声明了 `Authorization: Bearer ${DEVIN_API_KEY}` 和 `X-Org-Id: ${DEVIN_ORG_ID}`。Devin Cloud 里打开插件的 **Connect** 流程填两个值；本地就导出环境变量：
 
 ```bash
 export DEVIN_API_KEY='cog_...'
 export DEVIN_ORG_ID='org-...'
 ```
-
-插件内置的 MCP 配置会在请求头里展开 `${env:DEVIN_API_KEY}` / `${env:DEVIN_ORG_ID}`。
 
 **方案 B — 用户级配置写明文头**（所有 CLI 版本都可用，包括不支持 header env 展开的）。写入 `~/.config/devin/mcp_config.json`（Windows：`%APPDATA%\devin\mcp_config.json`）：
 
