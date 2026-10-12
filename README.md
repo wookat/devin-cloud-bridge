@@ -1,5 +1,7 @@
 # devin-cloud-bridge
 
+**English** · [简体中文](./README.zh-CN.md)
+
 <p>
   <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg">
   <img alt="MCP" src="https://img.shields.io/badge/MCP-compatible-green">
