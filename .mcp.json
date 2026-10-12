@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "devin-cloud": {
+      "url": "https://mcp.devin.ai/mcp",
+      "transport": "http",
+      "headers": {
+        "Authorization": "Bearer ${env:DEVIN_API_KEY}",
+        "X-Org-Id": "${env:DEVIN_ORG_ID}"
+      }
+    }
+  }
+}
