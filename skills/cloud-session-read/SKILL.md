@@ -11,7 +11,15 @@ Use when the user references a cloud Devin session — `@conversation:` links, `
 
 1. **URL** → the 32-hex id after `/sessions/`.
 2. **Title/description** → `devin-cloud` tool `devin_session_search` (filter by title text, status, date).
-3. If multiple orgs/accounts exist, a 404 means wrong org — ask the user which account, then they set `DEVIN_ORG_ID` accordingly.
+3. A 404 means wrong org — the session lives under another `X-Org-Id`.
+
+## Multiple accounts / orgs
+
+Each Devin account (org) needs its own PAT, and each gets its own MCP server entry named `devin-cloud-<label>` (e.g. `devin-cloud-acc1`, `devin-cloud-acc2`) in `mcp_config.json`. The plugin installs one entry; extra accounts are extra entries with the same `url` and different `Authorization`/`X-Org-Id` headers.
+
+- Tools appear namespaced per server: `mcp__devin-cloud-acc1__devin_session_search`, etc.
+- If the user doesn't say which account a session is in, search the default `devin-cloud` first, then each additional account until found.
+- Sessions belong to orgs, not browser profiles — one PAT sees every session in its org.
 
 ## Pull the record
 

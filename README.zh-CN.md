@@ -78,10 +78,38 @@ devin plugins install --local /path/to/devin-cloud-bridge
 
 装好后新会话自动获得 `mcp__devin-cloud__*` 工具 + `/devin-cloud-bridge:cloud-session-read`、`/devin-cloud-bridge:cloud-handoff` 两个技能（贴会话链接或问云端会话时也会自动触发）。
 
+### 4. 一句话安装（扔给任何 Devin 会话）
+
+不用手动装——把这段 prompt 直接发给本地或云端的 Devin 会话，它自己装自己配：
+
+```text
+安装插件 https://github.com/wookat/devin-cloud-bridge —— 执行
+`devin plugins install wookat/devin-cloud-bridge`，然后问我要
+DEVIN_API_KEY（`cog_` 开头的 token）和 DEVIN_ORG_ID（`org-…`），
+以明文 header 写进用户级 mcp_config.json 的 `devin-cloud` 条目里
+（不要提交进任何仓库），最后对该 server 调一次 tools/list 验证。
+```
+
+`plugins install` 可能需要先 `devin auth login`（浏览器登录一次）——那是 CLI 本体登录，和 API key 是两回事。
+
+## 👥 多账号 / 多 org
+
+一个 `devin-cloud` 条目对应一个 org。有多个 Devin 账号就每账号加一条——URL 相同、凭证不同、命名为 `devin-cloud-<标签>`：
+
+```json
+"devin-cloud-acc1": { "url": "https://mcp.devin.ai/mcp", "transport": "http",
+  "headers": { "Authorization": "Bearer cog_acc1...", "X-Org-Id": "org-acc1..." } },
+"devin-cloud-acc2": { "url": "https://mcp.devin.ai/mcp", "transport": "http",
+  "headers": { "Authorization": "Bearer cog_acc2...", "X-Org-Id": "org-acc2..." } }
+```
+
+工具按 server 名区分（`mcp__devin-cloud-acc1__*` / `mcp__devin-cloud-acc2__*`），一个本地会话就能同时读写所有账号的云端会话。会话本身不能跨 org 转移，但**规划可以**：在 A 账号读会话记录 → 用接班简报作 prompt 在 B 账号 `devin_session_create`（`cloud-handoff` 技能已覆盖此流程）。
+
 ## 🧭 用法
 
 - **「读一下这个云端会话 https://app.devin.ai/sessions/\<id\>」** → agent 拉出完整记录
 - **「云端那个会话的规划搬到本地继续做」** → 接班流：简报 → 克隆/checkout → 经你确认后继续执行
+- **「把 X 会话放到我另一个账号上继续」** → A 上读 → B 上建
 - **「给 528bbbd2 会话发条消息让它收工」** → `devin_session_interact`（写操作会先确认）
 
 ## ⚠️ 注意

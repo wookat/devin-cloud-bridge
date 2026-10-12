@@ -78,10 +78,38 @@ devin plugins install --local /path/to/devin-cloud-bridge
 
 New sessions then expose `mcp__devin-cloud__*` tools plus the skills `/devin-cloud-bridge:cloud-session-read` and `/devin-cloud-bridge:cloud-handoff` (they also auto-trigger when you paste a session URL or ask about a cloud conversation).
 
+### 4. One-prompt install (send to any Devin session)
+
+Instead of installing by hand, paste this prompt into any local or cloud Devin session — the agent installs and configures it for you:
+
+```text
+Install the plugin https://github.com/wookat/devin-cloud-bridge — run
+`devin plugins install wookat/devin-cloud-bridge`, then ask me for my
+DEVIN_API_KEY (a `cog_` token) and DEVIN_ORG_ID (`org-…`), write them as
+literal headers into a `devin-cloud` entry in my user mcp_config.json
+(never commit them), and verify by calling tools/list on the new server.
+```
+
+The agent may still need one `devin auth login` (browser) for the `plugins install` command — that's a one-time CLI login, unrelated to the API key.
+
+## 👥 Multiple accounts / orgs
+
+One `devin-cloud` entry covers one org. For multiple Devin accounts, add one entry per account — same URL, different credentials, named `devin-cloud-<label>`:
+
+```json
+"devin-cloud-acc1": { "url": "https://mcp.devin.ai/mcp", "transport": "http",
+  "headers": { "Authorization": "Bearer cog_acc1...", "X-Org-Id": "org-acc1..." } },
+"devin-cloud-acc2": { "url": "https://mcp.devin.ai/mcp", "transport": "http",
+  "headers": { "Authorization": "Bearer cog_acc2...", "X-Org-Id": "org-acc2..." } }
+```
+
+Tools are namespaced per server (`mcp__devin-cloud-acc1__*` vs `mcp__devin-cloud-acc2__*`), so one local session can read — and act on — every account's cloud sessions. Sessions can't move between orgs, but the plan can: read events on account A, then `devin_session_create` on account B with the handoff brief as the prompt (the `cloud-handoff` skill covers this flow).
+
 ## 🧭 Usage
 
 - **"Read this cloud session: https://app.devin.ai/sessions/\<id\>"** → the agent pulls the full record.
 - **"Move that cloud session's plan to local and keep going"** → handoff flow: brief → clone/checkout → resume, with your confirmation at each step.
+- **"Resume cloud session X on my other account"** → read on A → create on B.
 - **"Tell session `528bbbd2…` to wrap up"** → `devin_session_interact` (the agent confirms before mutating).
 
 ## ⚠️ Notes

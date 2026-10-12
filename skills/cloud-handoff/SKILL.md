@@ -41,6 +41,10 @@ From the messages extract, in order:
 - `devin_session_interact` → send a "work continues locally, sleep" note if the user wants a record.
 - Terminate only on explicit request.
 
+## Cross-account handoff (cloud → cloud)
+
+Sessions can't move between orgs, but the plan can: read events via `devin-cloud-<accountA>` tools → build the same handoff brief → call `devin-cloud-<accountB>`'s `devin_session_create` with a prompt that embeds the brief (original task, done/verified state, key paths, next steps). The new session in account B resumes from the brief; the source repo must be reachable from B's environment (private repos need B's GitHub access).
+
 ## Pitfalls
 
 - Cloud session events are the source of truth — repo state on GitHub may lag behind session claims; verify `git log` and PR merge state before trusting "已合并/已上线".
